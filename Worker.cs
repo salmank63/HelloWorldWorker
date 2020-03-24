@@ -35,15 +35,17 @@ namespace HelloWorldWorker
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var result = await httpClient.GetAsync("https://admin.jugaadhai.in/api/Article/AppArticleListLazyLoad?skipNumber=0");
 
-                if (result.IsSuccessStatusCode)
+                var admin = await httpClient.GetAsync("https://admin.jugaadhai.in/api/Article/AppArticleListLazyLoad?skipNumber=0");
+                var sample = await httpClient.GetAsync("http://sample.jitangupta.com/api/Article/AppArticleListLazyLoad?skipNumber=0");
+
+                if (!admin.IsSuccessStatusCode || !sample.IsSuccessStatusCode)
                 {
-                    _logger.LogInformation("Server is Alive", DateTimeOffset.Now);
+                    continue;
                 }
 
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(60 * 3 * 1000, stoppingToken);
+                //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                await Task.Delay(60 * 4 * 1000, stoppingToken);
             }
         }
     }
